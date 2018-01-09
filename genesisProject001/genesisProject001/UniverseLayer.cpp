@@ -1,6 +1,7 @@
 #include "UniverseLayer.h"
 
 GLuint frameBuffer;
+GLuint renderBuffer;
 GLuint TexFront;
 GLuint TexBack;
 GLuint vao;
@@ -23,10 +24,11 @@ UniverseLayer::UniverseLayer(const char* vertexShader, const char* fragmentShade
 	//Generate Textures
 	genTex(TexFront);
 	genTex(TexBack);
+	genframeBuf(frameBuffer, renderBuffer);
 
-	glCreateFramebuffers(1, &frameBuffer);
-
-	//glGenFramebuffers(1, &frameBuffer);
+	/*VertexData space[4] = {
+		{{255, 255, 255, 255},{},{}}
+	}*/
 
 	GLfloat space[] = {
 		//POS		  //TEXcord	  //COLOR
@@ -68,19 +70,20 @@ UniverseLayer::UniverseLayer(const char* vertexShader, const char* fragmentShade
 	glEnableVertexAttribArray(colAttrib);
 	
 	scale = glGetUniformLocation(SW.InstlledProgramIDs[1], "scale");
-	glUniform2f(scale, 16, 16);
+	glUniform2f(scale, .100, .100);
 	std::cout << TexFront << " " << TexBack << std::endl;
-	//Step();
-	//Draw();
+	Step();
+	Draw();
 }
 
 void UniverseLayer::genTex(GLuint &id)
 {
-	glCreateTextures(GL_TEXTURE_2D, 1, &id);
+	//glCreateTextures(GL_TEXTURE_2D, 1, &id);
+	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
 	//2D TEX PROPERTIES
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -95,6 +98,20 @@ void UniverseLayer::genTex(GLuint &id)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_FLOAT, pixels);
 	}*/
 	
+}
+
+void UniverseLayer::genframeBuf(GLuint & fid, GLuint & rid)
+{
+	//glCreateFramebuffers(1, &frameBuffer);
+	//glGenRenderbuffers(1, &rid);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+	//	256, 256);
+
+	glGenFramebuffers(1, &fid);
+	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fid);
+	//glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,
+	//	GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rid);
+	//glEnable(GL_DEPTH_TEST);
 }
 
 void UniverseLayer::SwapTex()
@@ -118,25 +135,25 @@ void UniverseLayer::Step()
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TexBack, 0);
 	glViewport(0, 0, 512, 512);
-	glBindTexture(GL_TEXTURE_2D, TexFront);
+	glBindTexture(GL_TEXTURE_2D, TexFront);//select texfront cuz we're dealing with the back
 	glUseProgram(SW.InstlledProgramIDs[0]);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	SwapTex();
+	SwapTex();//put back tex up
 	std::cout << TexFront << " " << TexBack << std::endl;
 }
 
 void UniverseLayer::Draw() {
 	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 	glViewport(0, 0, 512, 512);
-	glBindTexture(GL_TEXTURE_2D, TexFront);
-	glUseProgram(SW.InstlledProgramIDs[1]);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindTexture(GL_TEXTURE_2D, TexFront);//draw back tex/last rendered/now up
+	glUseProgram(SW.InstlledProgramIDs[1]);//copy from binded tex 
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//to screen
 }
 
 void UniverseLayer::Poke(int x, int y, int value) {
 	int v = value * 255;
 	glBindTexture(GL_TEXTURE_2D,TexFront);
-	glTexSubImage2D(GL_TEXTURE_2D,0,x,y,1,1,GL_RGBA,GL_UNSIGNED_BYTE, (new uint8_t[v, v, v, 255]));
+	glTexSubImage2D(GL_TEXTURE_2D,0,x,y,1,1,GL_RGBA,GL_UNSIGNED_BYTE, (new GLubyte[v, v, v, 255]));
 }
 
 

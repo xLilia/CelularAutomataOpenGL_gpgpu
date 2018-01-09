@@ -1,11 +1,18 @@
 #pragma once
 #include "ShaderWizard.h"
 
+struct VertexData {
+	GLubyte color[4];
+	GLfloat texCoords[4];
+	GLfloat position[4];
+};
+
 class UniverseLayer
 {
 public:
 	UniverseLayer(const char* vertexShader, const char* fragmentShader);
 	void genTex(GLuint &id);
+	void genframeBuf(GLuint &fid, GLuint &rid);
 	void Swap(GLuint * a, GLuint * b);
 	void SwapTex();
 	void Step();
