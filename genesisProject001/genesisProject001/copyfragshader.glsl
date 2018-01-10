@@ -9,6 +9,7 @@ out vec4 outColor;
 
 void main() {
 
-     //outColor = vec4(1.0, 0.0, 0.0, 1.0); / scale
+     //outColor = vec4(1.0, 0.0, 0.0, 1.0); 
 	 outColor = texture(state, TexCoord); 
+	 //outColor = texture2D(state, gl_FragCoord.xy / scale); 
 }

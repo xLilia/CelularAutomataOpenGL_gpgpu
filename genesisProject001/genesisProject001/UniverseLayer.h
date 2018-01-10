@@ -17,7 +17,7 @@ public:
 	void SwapTex();
 	void Step();
 	void Draw();
-	void Poke(int x, int y, int value);
+	void Poke(GLint x, GLint y, GLint value);
 	~UniverseLayer();
 private:
 	/*GLuint frameBuffer;

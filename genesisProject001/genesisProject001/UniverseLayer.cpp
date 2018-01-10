@@ -150,10 +150,11 @@ void UniverseLayer::Draw() {
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//to screen
 }
 
-void UniverseLayer::Poke(int x, int y, int value) {
-	int v = value * 255;
+void UniverseLayer::Poke(GLint x, GLint y, GLint value) {
+	GLint v = value * 255;
+	GLubyte pixel[] = { v, v, v, 255 };
 	glBindTexture(GL_TEXTURE_2D,TexFront);
-	glTexSubImage2D(GL_TEXTURE_2D,0,x,y,1,1,GL_RGBA,GL_UNSIGNED_BYTE, (new GLubyte[v, v, v, 255]));
+	glTexSubImage2D(GL_TEXTURE_2D,0,x,y,1,1,GL_RGBA,GL_UNSIGNED_BYTE, &pixel[0]);
 }
 
 
