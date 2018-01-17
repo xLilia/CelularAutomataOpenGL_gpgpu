@@ -149,7 +149,7 @@ void UniverseLayer::Step()
 	glUniform2f(scaleLoc0, stateSize.x, stateSize.y);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	SwapTex();//put back tex up
-	std::cout << TexFront << " " << TexBack << std::endl;
+	//std::cout << TexFront << " " << TexBack << std::endl;
 	
 }
 
@@ -163,7 +163,7 @@ void UniverseLayer::Draw() {
 }
 
 void UniverseLayer::Poke(GLint x, GLint y, GLint value) {
-	std::cout << "poked! " << x << " " << y << std::endl;
+	//std::cout << "poked! " << x << " " << y << std::endl;
 	GLint v = value * 255;
 	GLubyte pixel[] = { v, v, v, 255 };
 	glBindTexture(GL_TEXTURE_2D,TexFront);
