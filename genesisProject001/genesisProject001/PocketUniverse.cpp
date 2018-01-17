@@ -23,10 +23,10 @@ void PocketUniverse::TimeStep()
 		u.Draw();
 	}
 }
-void PocketUniverse::PokeUniverse(int x, int y) {
+void PocketUniverse::PokeUniverse(glm::vec2 xy, int value) {
 	for each (UniverseLayer u in ComplexityLayers)
 	{
-		u.Poke(x,y,1);
+		u.Poke(xy, value);
 	}
 }
 

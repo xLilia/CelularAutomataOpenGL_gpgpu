@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void _check_gl_error(const char *file, int line) {
+void _check_gl_error(const char *file, int line, int level) {
 	GLenum err(glGetError());
 
 	while (err != GL_NO_ERROR) {
@@ -16,9 +16,18 @@ void _check_gl_error(const char *file, int line) {
 		 case GL_OUT_OF_MEMORY:					error = "OUT_OF_MEMORY";					break;
 		 case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION";	break;
 		 }
-		 //cerr << "GL" << error.c_str()
-		 cout << "GL_" << error.c_str() << " - " << file << ":" << line << endl;
+
+		 switch (level)
+		 {
+		 case 1:
+			 cout << "GL_" << error.c_str() << " :" << line << endl;
+			 break;
+		 default:
+			 cout << "GL_" << error.c_str() << " - " << file << ":" << line << endl;
+			 break;
+		 }
 		 err = glGetError();
+		 
 	}
 
 }

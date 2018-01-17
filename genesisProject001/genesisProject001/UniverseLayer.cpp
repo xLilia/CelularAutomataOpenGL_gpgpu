@@ -96,31 +96,12 @@ void UniverseLayer::genTex(GLuint &id)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, stateSize.x, stateSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	
-	// Black/white checkerboard
-	/*if (id ==1) {
-		float pixels[] = {
-			0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
-		};
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_FLOAT, pixels);
-	}*/
-	
+
 }
 
 void UniverseLayer::genframeBuf(GLuint & fid, GLuint & rid)
 {
-	
-	//glGenRenderbuffers(1, &rid);
-	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
-	//	256, 256);
-
-	//glGenFramebuffers(1, &fid);
 	glCreateFramebuffers(1, &fid);
-	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fid);
-	//glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,
-	//	GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rid);
-	//glEnable(GL_DEPTH_TEST);
 }
 
 void UniverseLayer::SwapTex()
@@ -144,11 +125,11 @@ void UniverseLayer::Step()
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TexBack, 0);
 	glViewport(0, 0, stateSize.x, stateSize.y);
-	glBindTexture(GL_TEXTURE_2D, TexFront);//select texfront cuz we're dealing with the back
+	glBindTexture(GL_TEXTURE_2D, TexFront);
 	glUseProgram(SW.InstlledProgramIDs[0]);
 	glUniform2f(scaleLoc0, stateSize.x, stateSize.y);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	SwapTex();//put back tex up
+	SwapTex();//put backtex -> up
 	//std::cout << TexFront << " " << TexBack << std::endl;
 	
 }
@@ -156,20 +137,32 @@ void UniverseLayer::Step()
 void UniverseLayer::Draw() {
 	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 	glViewport(0, 0, viewportSize.x, viewportSize.y);
-	glBindTexture(GL_TEXTURE_2D, TexFront);//draw back tex/last rendered/now up
+	glBindTexture(GL_TEXTURE_2D, TexFront);//bind back tex/last rendered/now up to draw
 	glUseProgram(SW.InstlledProgramIDs[1]);//copy from binded tex 
 	glUniform2f(scaleLoc1, viewportSize.x, viewportSize.y);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//to screen
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void UniverseLayer::Poke(GLint x, GLint y, GLint value) {
-	//std::cout << "poked! " << x << " " << y << std::endl;
-	GLint v = value * 255;
+void UniverseLayer::screenCoordToTex(glm::vec2 &coord) {
+	coord.x = -(((viewportSize.x - coord.x) * stateSize.x) / viewportSize.x) + stateSize.x;
+	coord.y = -((coord.y * stateSize.y) / viewportSize.y) + stateSize.y;
+}
+
+void UniverseLayer::Poke(glm::vec2 Mouse_xy, GLint value) {
+	screenCoordToTex(Mouse_xy);
+	std::cout << "poked! " << Mouse_xy.x << " " << Mouse_xy.y << std::endl;
+	GLint v = value * 255; 
 	GLubyte pixel[] = { v, v, v, 255 };
 	glBindTexture(GL_TEXTURE_2D,TexFront);
-	glTexSubImage2D(GL_TEXTURE_2D,0,x,y,1,1,GL_RGBA,GL_UNSIGNED_BYTE, pixel);
+	if (value == 1) {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, Mouse_xy.x - .5f, Mouse_xy.y - .5f, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+	}
+	else {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, Mouse_xy.x - .5f, Mouse_xy.y - .5f, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+	}
+	
+	Draw();
 	check_gl_error();
-	//Draw();
 }
 
 

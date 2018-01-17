@@ -16,6 +16,6 @@ void main() {
 	 //vec2 tc = ((gl_FragCoord.xy) / scale.xy);
 	 //outColor = texture(state, tc);
 	 //outColor = texture(state, gl_FragCoord.rg ); 
-	 outColor = texture2D(state, gl_FragCoord.xy / scale1);
+	 outColor = texture2D(state, gl_FragCoord.rg / scale1);
 	 
 }

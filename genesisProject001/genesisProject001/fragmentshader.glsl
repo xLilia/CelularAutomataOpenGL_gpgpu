@@ -15,7 +15,7 @@ int get(vec2 offset){
 void main(){
 
 	//int current = get(vec2(0.0, 0.0));
-    //outColor = vec4(current, current, current, 1.0);
+	//gl_FragColor = vec4(current, current, current, 1.0);
 	
 	int sum =
         get(vec2(-1.0, -1.0)) +

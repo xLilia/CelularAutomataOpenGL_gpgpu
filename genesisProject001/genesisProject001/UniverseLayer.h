@@ -19,7 +19,8 @@ public:
 	void SwapTex();
 	void Step();
 	void Draw();
-	void Poke(GLint x, GLint y, GLint value);
+	void screenCoordToTex(glm::vec2 & coord);
+	void Poke(glm::vec2 Mouse_xy, GLint value);
 
 	glm::vec2 stateSize, viewportSize;
 	~UniverseLayer();

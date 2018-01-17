@@ -11,11 +11,13 @@
 
 int main() {
 	
-	sf::RenderWindow window(sf::VideoMode(512, 512), "Pocket Universe");
+	sf::RenderWindow window(sf::VideoMode(1024, 1024), "Pocket Universe");
 
 	PocketUniverse PKU;
-	PKU.createLayer("vertexShader.glsl", "fragmentShader.glsl", glm::vec2(window.getSize().x, window.getSize().y), glm::vec2(4, 4));
+	PKU.createLayer("vertexShader.glsl", "fragmentShader.glsl", glm::vec2(window.getSize().x, window.getSize().y), glm::vec2(8, 8));
 	window.display();
+
+	bool running = false;
 
 	while (window.isOpen())
 	{
@@ -28,17 +30,26 @@ int main() {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 					PKU.TimeStep();
 					window.display();
-					std::cout << "space " << PKU.UTime << std::endl;
+					running = !running;
+					std::cout << "epoch " << PKU.UTime << std::endl;
 				}
 			}
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				PKU.PokeUniverse(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+				PKU.PokeUniverse(glm::vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y),1);
+				window.display();
+			}
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+				PKU.PokeUniverse(glm::vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y),0);
+				window.display();
 			}
 		}
+
+		/*if (running) {
+			PKU.TimeStep();
+			window.display();
+		}*/
 		
-		//window.clear();
-		
-		
+		//std::cout << "space " << PKU.UTime << std::endl;
 	}
 
 	return 0;
