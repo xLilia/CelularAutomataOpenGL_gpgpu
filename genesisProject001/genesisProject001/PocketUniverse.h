@@ -1,15 +1,16 @@
 #pragma once
+#include "UniverseLayer.h"
+
 #include<GL\glew.h>
-#include <glm.hpp>
 #include <vector>
 
-#include "UniverseLayer.h"
+
 
 class PocketUniverse
 {
 public:
-	PocketUniverse(int complexity = 0);
-	void createLayer(const char* vertexShader, const char* fragmentShader);
+	PocketUniverse();
+	void createLayer(const char* vertexShader, const char* fragmentShader, glm::vec2 viewportSize, glm::vec2 pixelScale);
 	void TimeStep();
 	void PokeUniverse(int x, int y);
 	~PocketUniverse();

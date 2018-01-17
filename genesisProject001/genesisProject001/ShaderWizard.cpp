@@ -89,7 +89,7 @@ void ShaderWizard::installShaders(const char * VertexShader, const char * Fragme
 	if (FragmentShader)
 		glDeleteShader(FragmentShaderID);
 
-	//glUseProgram(programID);
+	glUseProgram(programID);
 	InstlledProgramIDs.push_back(programID);
 }
 

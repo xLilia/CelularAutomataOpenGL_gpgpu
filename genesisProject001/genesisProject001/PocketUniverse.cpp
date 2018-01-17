@@ -1,16 +1,17 @@
 #include "PocketUniverse.h"
 
 
-PocketUniverse::PocketUniverse(int complexity)
+PocketUniverse::PocketUniverse()
 {
 	glewInit();
+	glDisable(GL_DEPTH_TEST);
 
 }
 
-void PocketUniverse::createLayer(const char* vertexShader, const char* fragmentShader)
+void PocketUniverse::createLayer(const char* vertexShader, const char* fragmentShader, glm::vec2 viewportSize, glm::vec2 pixelScale)
 {
 	
-	this->ComplexityLayers.push_back(UniverseLayer(vertexShader, fragmentShader));
+	this->ComplexityLayers.push_back(UniverseLayer(vertexShader, fragmentShader, viewportSize, pixelScale));
 }
 
 void PocketUniverse::TimeStep()

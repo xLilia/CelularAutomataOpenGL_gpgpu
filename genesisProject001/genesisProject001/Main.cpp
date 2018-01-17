@@ -13,8 +13,8 @@ int main() {
 	
 	sf::RenderWindow window(sf::VideoMode(512, 512), "Pocket Universe");
 
-	PocketUniverse PKU(1);
-	PKU.createLayer("vertexShader.glsl", "fragmentShader.glsl");
+	PocketUniverse PKU;
+	PKU.createLayer("vertexShader.glsl", "fragmentShader.glsl", glm::vec2(window.getSize().x, window.getSize().y), glm::vec2(12, 12));
 	window.display();
 
 	while (window.isOpen())
@@ -33,7 +33,6 @@ int main() {
 			}
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				PKU.PokeUniverse(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-				std::cout << "poked! " << sf::Mouse::getPosition(window).x << " " << sf::Mouse::getPosition(window).y << std::endl;
 			}
 		}
 

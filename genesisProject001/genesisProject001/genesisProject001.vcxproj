@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GLError.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ShaderWizard.cpp" />
     <ClCompile Include="PocketUniverse.cpp" />
@@ -156,6 +157,7 @@
     <None Include="vertexshader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GLError.h" />
     <ClInclude Include="ShaderWizard.h" />
     <ClInclude Include="PocketUniverse.h" />
     <ClInclude Include="UniverseLayer.h" />

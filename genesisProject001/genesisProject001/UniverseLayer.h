@@ -1,5 +1,7 @@
 #pragma once
 #include "ShaderWizard.h"
+#include "GLError.h"
+#include <glm.hpp>
 
 struct VertexData {
 	GLubyte color[4];
@@ -10,7 +12,7 @@ struct VertexData {
 class UniverseLayer
 {
 public:
-	UniverseLayer(const char* vertexShader, const char* fragmentShader);
+	UniverseLayer(const char* vertexShader, const char* fragmentShader, glm::vec2 viewportSize, glm::vec2 pixelScale);
 	void genTex(GLuint &id);
 	void genframeBuf(GLuint &fid, GLuint &rid);
 	void Swap(GLuint * a, GLuint * b);
@@ -18,6 +20,8 @@ public:
 	void Step();
 	void Draw();
 	void Poke(GLint x, GLint y, GLint value);
+
+	glm::vec2 stateSize, viewportSize;
 	~UniverseLayer();
 private:
 	/*GLuint frameBuffer;
