@@ -13,7 +13,7 @@ vec4 get(vec2 offset){
 }
 
 void main(){
-	//Init
+	////Init
 	vec4 current =	get(vec2(0,0));
 	vec4 L =		get(vec2(-1,0));
 	vec4 R =		get(vec2(+1,0));
@@ -24,11 +24,22 @@ void main(){
 	vec4 DL =		get(vec2(-1,-1));
 	vec4 DR =		get(vec2(+1,-1));
 	vec4 sum =		L+R+U+D+UL+UR+DL+DR;
-	vec4 born =		vec4(1);
-	vec4 killed =	vec4(0);
+	vec4 birth =	vec4(1);
+	vec4 death =	vec4(0);
 	
 	////Rules
+	//Conway's Game Of Life
+	if(float(sum) == 2){
+		outColor = current;
+	}
 
+	if(float(sum) == 3){
+		outColor = birth;
+	}
+
+	if(float(sum) > 3){
+		outColor = death;
+	}
 
 
 
