@@ -8,34 +8,45 @@ in vec2 TexCoord;
 
 out vec4 outColor;
 
-int get(vec2 offset){
-	return int(texture(state, (gl_FragCoord.xy + offset) / scale0).r); 
+vec4 get(vec2 offset){
+	return texture(state, (gl_FragCoord.xy + offset) / scale0); 
 }
 
 void main(){
-
-	//int current = get(vec2(0.0, 0.0));
-	//gl_FragColor = vec4(current, current, current, 1.0);
+	//Init
+	vec4 current =	get(vec2(0,0));
+	vec4 L =		get(vec2(-1,0));
+	vec4 R =		get(vec2(+1,0));
+	vec4 U =		get(vec2(0,+1));
+	vec4 D =		get(vec2(0,-1));
+	vec4 UL =		get(vec2(-1,+1));
+	vec4 UR =		get(vec2(+1,+1));
+	vec4 DL =		get(vec2(-1,-1));
+	vec4 DR =		get(vec2(+1,-1));
+	vec4 sum =		L+R+U+D+UL+UR+DL+DR;
+	vec4 born =		vec4(1);
+	vec4 killed =	vec4(0);
 	
-	int sum =
-        get(vec2(-1.0, -1.0)) +
-        get(vec2(-1.0,  0.0)) +
-        get(vec2(-1.0,  1.0)) +
-        get(vec2( 0.0, -1.0)) +
-        get(vec2( 0.0,  1.0)) +
-        get(vec2( 1.0, -1.0)) +
-        get(vec2( 1.0,  0.0)) +
-        get(vec2( 1.0,  1.0));
-    if (sum == 3) {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    } else if (sum == 2) {
-        float current = float(get(vec2(0.0, 0.0)));
-        gl_FragColor = vec4(current, current, current, 1.0);
-    } else {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    }
+	////Rules
 
-	//outColor = vec4(TexCoord, 0.0, 1.0);
-	//outColor = texture(state, gl_FragCoord.xy);
+
+
+
+
+	
+	
+
+
+	
+
+	
+	
+
+	
+
+	
+	
+	
+
 
 }

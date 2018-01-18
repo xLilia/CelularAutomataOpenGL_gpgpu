@@ -11,14 +11,22 @@
 
 int main() {
 	
-	sf::RenderWindow window(sf::VideoMode(1024, 1024), "Pocket Universe");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Pocket Universe");
+	window.create(sf::VideoMode::getFullscreenModes()[0], "Pocket Universe", sf::Style::Fullscreen);
+	//window.setFramerateLimit(60);
+	//window.setVerticalSyncEnabled(true);
+	//window.setMouseCursorVisible(false);
+	//window.setMouseCursorGrabbed(true);
 
 	PocketUniverse PKU;
-	PKU.createLayer("vertexShader.glsl", "fragmentShader.glsl", glm::vec2(window.getSize().x, window.getSize().y), glm::vec2(8, 8));
+	PKU.createLayer("vertexShader.glsl", "fragmentShader.glsl", 
+		glm::vec2(window.getSize().x, window.getSize().y), 
+		glm::vec2(8, 8));
 	window.display();
 
 	bool running = false;
-
+	int speed = 0;
+	int stepcounter = speed;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -30,8 +38,16 @@ int main() {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 					PKU.TimeStep();
 					window.display();
-					running = !running;
 					std::cout << "epoch " << PKU.UTime << std::endl;
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+					running = !running;
+					if (running) {
+						std::cout << "running " << "at speed: " << speed << std::endl;
+					}
+					else {
+						std::cout << "STOPED " << "at speed: " << speed << std::endl;
+					}
 				}
 			}
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -42,12 +58,25 @@ int main() {
 				PKU.PokeUniverse(glm::vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y),0);
 				window.display();
 			}
+
+			if (event.type == sf::Event::MouseWheelScrolled) {
+				if (speed >= 0) {
+					speed += event.mouseWheelScroll.delta * 100;
+				}
+				else {
+					speed = 0;
+				}
+				std::cout << "speed " << speed << std::endl;
+			}
 		}
 
-		/*if (running) {
+		stepcounter--;
+		if (running && stepcounter <= 0) {
 			PKU.TimeStep();
 			window.display();
-		}*/
+			stepcounter = speed;
+		}
+	
 		
 		//std::cout << "space " << PKU.UTime << std::endl;
 	}
