@@ -1,3 +1,3 @@
 # CelularAutomataEngine In OpenGL & C++
 
-small Celular automata engine for rule testing and system visualization.
+Small Celular automata engine for rule testing and system visualization.
